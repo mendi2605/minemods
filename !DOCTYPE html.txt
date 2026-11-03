@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MineMods & Textures | Каталог модов и аниме текстур</title>
+    <style>
+        /* Базовые стили и обнуление */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Шапка сайта */
+        header {
+            background-color: #1a1a1a;
+            border-bottom: 3px solid #528022; /* Зеленый цвет Minecraft */
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #528022;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .logo span {
+            color: #fff;
+        }
+
+        /* Контейнер поиска в шапке */
+        .search-container {
+            flex-grow: 1;
+            max-width: 400px;
+            margin: 0 1rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: #262626;
+            border: 1px solid #3a3a3a;
+            color: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #528022;
+            box-shadow: 0 0 8px rgba(82, 128, 34, 0.4);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a:hover {
+            color: #528022;
+            transition: 0.3s;
+        }
+
+        /* Главный баннер */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(18,18,18,1)), url('https://unsplash.com') center/cover;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            text-shadow: 3px 3px 5px rgba(0,0,0,0.8);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            color: #b3b3b3;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Фильтры категорий */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #262626;
+            color: #fff;
+            border: 2px solid #3a3a3a;
+            padding: 0.6rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #528022;
+            border-color: #649b29;
+            box-shadow: 0 0 10px rgba(82, 128, 34, 0.5);
+        }
+
+        /* Специальная подсветка аниме кнопки */
+        .filter-btn[data-cat="textures"]:hover, .filter-btn[data-cat="textures"].active {
+            background-color: #ff4a8d;
+            border-color: #ff66a3;
+            box-shadow: 0 0 10px rgba(255, 74, 141, 0.5);
+        }
+
+        /* Сетка контента */
+        .mods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Карточка элемента */
+        .mod-card {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #2d2d2d;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mod-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border-color: #528022;
+        }
+
+        .mod-card[data-category="textures"]:hover {
+            border-color: #ff4a8d;
+        }
+
+        .mod-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #333;
+        }
+
+        .mod-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .mod-tag {
+            align-self: flex-start;
+            background-color: #2b2b2b;
+            color: #528022;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            border: 1px solid #3a3a3a;
+        }
+
+        .mod-card[data-category="textures"] .mod-tag {
+            color: #ff4a8d;
+        }
+
+        .mod-title {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .mod-desc {
+            font-size: 0.95rem;
+            color: #a0a0a0;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .mod-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #777;
+            border-top: 1px solid #2d2d2d;
+            padding-top: 1rem;
+        }
+
+        .download-btn {
+            background-color: #528022;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: #649b29;
+        }
+
+        .mod-card[data-category="textures"] .download-btn {
+            background-color: #ff4a8d;
+        }
+
+        .mod-card[data-category="textures"] .download-btn:hover {
+            background-color: #ff66a3;
+        }
+
+        /* Сообщение о пустом поиске */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: #777;
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        /* Подвал */
+        footer {
+            background-color: #1a1a1a;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid #2d2d2d;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        footer strong {
+            color: #888;
+        }
+
+        /* Мобильная адаптивность */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .search-container {
+                max-width: 100%;
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <div class="logo">Mine<span>Store</span></div>
+        
+        <!-- СТРОКА ПОИСКА -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Искать моды или аниме паки..." oninput="applyFilters()">
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#" onclick="changeCategory('all')">Главная</a></li>
+                <li><a href="#" onclick="changeCategory('tech')">Моды</a></li>
+                <li><a href="#" onclick="changeCategory('textures')">Текстуры</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Главный баннер -->
+    <section class="hero">
+        <h1>Моды и Аниме Текстуры</h1>
+        <p>Каталог самых лучших, проверенных модификаций и красочных аниме ресурспаков для твоего игрового мира!</p>
+    </section>
+
+    <!-- Основная секция каталога -->
+    <main class="container">
+        
+        <!-- Кнопки фильтрации -->
+        <div class="filters">
+            <button class="filter-btn active" data-cat="all" onclick="changeCategory('all')">Все подряд</button>
+            <button class="filter-btn" data-cat="tech" onclick="changeCategory('tech')">Технические моды</button>
+            <button class="filter-btn" data-cat="magic" onclick="changeCategory('magic')">Магические моды</button>
+            <button class="filter-btn" data-cat="adventure" onclick="changeCategory('adventure')">Приключения</button>
+            <button class="filter-btn" data-cat="textures" onclick="changeCategory('textures')">🌸 Аниме Текстуры</button>
+        </div>
+
+        <!-- Сетка карточек -->
+        <div class="mods-grid" id="modsGrid">
+            
+            <!-- Сообщение, если ничего не найдено -->
+            <div class="no-results" id="noResultsMessage">Ничего не найдено. Попробуйте изменить запрос.</div>
+
+            <!-- ТЕКСТУР-ПАК 1 -->
+            <div class="mod-card" data-category="textures">
+                <img src="https://unsplash.com" alt="Demon Slayer Pack" class="mod-img">
+                <div class="mod-info">
+                    <span class="mod-tag">Аниме Ресурспак</span>
+                    <h3 class="mod-title">Demon Slayer: Rebirth</h3>
